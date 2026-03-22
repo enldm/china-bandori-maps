@@ -17,6 +17,10 @@ let activeBubbleState = null;
 let bubbleAnimToken = 0;
 let invertCtrlBubble = false;
 let feedbackModalBound = false;
+let rightClickGuardBound = false;
+let developerModeEnabled = false;
+let resetClickBurstCount = 0;
+let resetClickBurstTimer = null;
 
 function normalizeProvinceName(name) {
   if (!name) return '';
@@ -119,6 +123,48 @@ function bindBubbleAction() {
   });
 
   bubbleActionBound = true;
+}
+
+function bindRightClickGuard() {
+  if (rightClickGuardBound) return;
+
+  document.addEventListener(
+    'contextmenu',
+    (event) => {
+      if (developerModeEnabled) return;
+      event.preventDefault();
+    },
+    true
+  );
+
+  rightClickGuardBound = true;
+}
+
+function handleResetBurstForDeveloperMode() {
+  resetClickBurstCount += 1;
+
+  if (resetClickBurstTimer) {
+    clearTimeout(resetClickBurstTimer);
+  }
+
+  resetClickBurstTimer = setTimeout(() => {
+    resetClickBurstCount = 0;
+  }, 1400);
+
+  if (resetClickBurstCount >= 6) {
+    developerModeEnabled = !developerModeEnabled;
+    resetClickBurstCount = 0;
+    clearTimeout(resetClickBurstTimer);
+    resetClickBurstTimer = null;
+
+    const resetBtn = document.getElementById('resetViewBtn');
+    if (resetBtn) {
+      resetBtn.textContent = developerModeEnabled ? '重置（开发者）' : '重置';
+      resetBtn.title = developerModeEnabled
+        ? '开发者模式已开启：允许右键'
+        : '开发者模式已关闭：禁止右键';
+    }
+  }
 }
 
 function bindIntroToggle() {
@@ -518,6 +564,8 @@ function bindControlEvents() {
   if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => stepScale(1 / 1.2));
   if (resetViewBtn) {
     resetViewBtn.addEventListener('click', () => {
+      handleResetBurstForDeveloperMode();
+
       if (!mapViewState) return;
       const { svg, g, zoom, baseScale, baseTranslate } = mapViewState;
       zoom.scale(baseScale).translate(baseTranslate.slice());
@@ -770,6 +818,7 @@ async function init() {
   bindCopyAction();
   bindIntroToggle();
   bindFeedbackModal();
+  bindRightClickGuard();
 }
 
 window.addEventListener('resize', renderChinaMap);
