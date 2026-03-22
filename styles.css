@@ -395,7 +395,7 @@ html, body {
   top: 16px;
   right: 16px;
   text-align: left;
-  max-height: calc(100vh - 32px);
+  max-height: calc(100vh - 40px);
   overflow: hidden;
   transition: height 460ms var(--ease-spring), box-shadow 320ms var(--ease-spring);
 }
@@ -576,13 +576,14 @@ html, body {
 /* 列表项 */
 .group-list {
   margin-top: 12px;
-  max-height: calc(100vh - 220px);
+  max-height: calc(100vh - 262px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding-right: 4px;
   border-top: 1px solid var(--md-outline-variant);
   padding-top: 10px;
+  padding-bottom: 34px;
   transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1045,8 +1046,11 @@ html, body {
     right: 8px;
     bottom: 8px;
     width: calc(100vw - 16px);
-    max-height: 46vh;
+    height: 46vh;
+    max-height: none;
     border-radius: 18px;
+    display: flex;
+    flex-direction: column;
   }
 
   .side-toggle-btn {
@@ -1076,7 +1080,14 @@ html, body {
 
   .md3-btn { min-height: 38px; padding: 9px 12px; font-size: 12px; }
 
-  .group-list { max-height: calc(46vh - 112px); }
+  .group-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    padding-bottom: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
   .list-tools { padding: 8px; gap: 6px; }
 
   .search-mode-btn { width: 32px; height: 32px; padding: 0 9px; }
