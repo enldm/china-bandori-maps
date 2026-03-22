@@ -38,11 +38,11 @@
         {
             "id": 4,
             "province": "河北",
-            "name": "廊坊邦群",
+            "name": "廊坊市",
             "info": "1061615824",
             "type": "region",
             "verified": 1,
-            "raw_text": "廊坊邦群 1061615824",
+            "raw_text": "廊坊市 1061615824",
             "created_at": "2026-03-23",
             "project": "bandori"
         }
