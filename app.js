@@ -23,6 +23,7 @@ let resetClickBurstCount = 0;
 let resetClickBurstTimer = null;
 let refreshActionBound = false;
 let mobileEdgeBounceBound = false;
+let easterEggBound = false;
 
 function isMobileViewport() {
   return window.matchMedia('(max-width: 720px)').matches;
@@ -286,6 +287,58 @@ function bindMobileEdgeBounce() {
   attach(document.getElementById('introCard'), document.getElementById('introCard'));
 
   mobileEdgeBounceBound = true;
+}
+
+function bindEasterEgg() {
+  if (easterEggBound) return;
+
+  const titleEl = document.getElementById('introTitle');
+  const modal = document.getElementById('easterModal');
+  const closeBtn = document.getElementById('easterModalClose');
+  const textEl = document.getElementById('easterText');
+  if (!titleEl || !modal || !closeBtn || !textEl) return;
+
+  const easterText =
+    '又到了深夜，我又开始想念户山香澄了。他们都说二次元是假的，但我知道，ksm那句キラキラドキドキ划破次元壁击中我心脏的时候，那种痛觉是真实的。没有ksm的氧气是涩的，没有ksm的太阳是暗的。我现在只要一闭上眼，满脑子全都是星星。医生说我病了，我说对，我得了没有ksm就会死掉的病。如果这个世界上只剩下最后一点星光，那一定是ksm在唱歌。嘿嘿……ksm……我的星星……🤤';
+
+  let clickCount = 0;
+  let clickTimer = null;
+
+  const open = () => {
+    textEl.textContent = easterText;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+  };
+
+  const close = () => {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  };
+
+  titleEl.addEventListener('click', () => {
+    clickCount += 1;
+    if (clickTimer) clearTimeout(clickTimer);
+
+    clickTimer = setTimeout(() => {
+      clickCount = 0;
+    }, 2600);
+
+    if (clickCount >= 10) {
+      clickCount = 0;
+      if (clickTimer) {
+        clearTimeout(clickTimer);
+        clickTimer = null;
+      }
+      open();
+    }
+  });
+
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) close();
+  });
+
+  easterEggBound = true;
 }
 
 function handleResetBurstForDeveloperMode() {
@@ -965,6 +1018,7 @@ async function init() {
   bindRightClickGuard();
   bindRefreshAction();
   bindMobileEdgeBounce();
+  bindEasterEgg();
 }
 
 window.addEventListener('resize', () => {
