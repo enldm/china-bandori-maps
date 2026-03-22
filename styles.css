@@ -67,6 +67,11 @@ body {
   display: block;
   width: 100%;
   height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#mapSvg * {
+  -webkit-tap-highlight-color: transparent;
 }
 
 #tooltip {
@@ -872,6 +877,12 @@ body {
 
 .province:hover {
   fill: #ff3b8d !important;
+}
+
+.province:focus,
+.province:active,
+.province:focus-visible {
+  outline: none !important;
 }
 
 .province.selected {
