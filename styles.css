@@ -376,6 +376,14 @@ body {
   margin: 2px 0 10px;
 }
 
+#introCounter {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-top: 12px;
+}
+
 #introCard .card-body {
   font-size: 19px;
   line-height: 1.55;
