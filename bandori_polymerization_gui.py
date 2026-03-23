@@ -30,14 +30,15 @@ PROVINCES = [
     "海外",
 ]
 
-TYPE_OPTIONS = ["school", "region"]
+TYPE_OPTIONS = ["non-regional", "school", "region"]
 
 
 class BandoriPolymerizationApp:
     def __init__(self, root: tk.Tk):
         self.root = root
         self.root.title("Bandori Polymerization JSON 管理器")
-        self.root.geometry("1100x620")
+        self.root.geometry("1500x820")
+        self.root.minsize(1280, 760)
 
         self.entries = {}
         self.variables = {}
@@ -56,6 +57,8 @@ class BandoriPolymerizationApp:
 
         right_frame = ttk.LabelFrame(main_frame, text="记录编辑", padding=10)
         right_frame.pack(side=tk.RIGHT, fill=tk.Y, padx=(12, 0))
+        right_frame.configure(width=320)
+        right_frame.pack_propagate(False)
 
         search_frame = ttk.Frame(left_frame)
         search_frame.pack(fill=tk.X, pady=(0, 8))
@@ -141,6 +144,8 @@ class BandoriPolymerizationApp:
     def load_data(self):
         data = self.read_json()
         self.records = data.get("data", [])
+        self.normalize_record_ids()
+        self.write_json()
         self.refresh_tree()
         self.clear_form()
 
@@ -177,15 +182,19 @@ class BandoriPolymerizationApp:
         if not selected_items:
             return
 
-        self.selected_tree_item = selected_items[0]
-        values = self.tree.item(self.selected_tree_item, "values")
+        selected_item = selected_items[0]
+        values = self.tree.item(selected_item, "values")
 
-        self.clear_form()
+        self.clear_form(reset_selection=False)
+        self.selected_tree_item = selected_item
         for index, (field, _) in enumerate(FIELDS):
             self.set_field_value(field, values[index])
 
-    def clear_form(self):
-        self.selected_tree_item = None
+    def clear_form(self, reset_selection=True):
+        if reset_selection:
+            self.selected_tree_item = None
+            self.tree.selection_remove(self.tree.selection())
+
         for field, entry in self.entries.items():
             if field == "verified":
                 self.variables[field].set(False)
@@ -199,6 +208,7 @@ class BandoriPolymerizationApp:
         self.set_entry_text(self.entries["created_at"], self.get_today())
         self.set_entry_text(self.entries["project"], "bandori")
         self.set_entry_text(self.entries["raw_text"], "")
+        self.variables["type"].set("non-regional")
 
     def set_entry_text(self, entry, value):
         state = str(entry.cget("state"))
@@ -256,11 +266,8 @@ class BandoriPolymerizationApp:
         if not record["name"]:
             raise ValueError("名称不能为空")
 
-        if not record["province"]:
-            raise ValueError("省份不能为空")
-
         if record["type"] not in TYPE_OPTIONS:
-            raise ValueError("类型只能是 school 或 region")
+            raise ValueError("类型只能是 non-regional、school 或 region")
 
         if record["id"]:
             try:
@@ -272,7 +279,8 @@ class BandoriPolymerizationApp:
 
         record["created_at"] = record["created_at"] or self.get_today()
         record["project"] = record["project"] or "bandori"
-        record["raw_text"] = self.build_raw_text(record["name"], record["info"])
+        if not record["raw_text"]:
+            record["raw_text"] = self.build_raw_text(record["name"], record["info"])
 
         return record
 
@@ -287,6 +295,11 @@ class BandoriPolymerizationApp:
         name = name.strip()
         info = info.strip()
         return f"{name} {info}".strip()
+
+    def normalize_record_ids(self):
+        self.records.sort(key=lambda item: int(item.get("id", 0)) if str(item.get("id", "")).isdigit() else 0)
+        for index, record in enumerate(self.records, start=1):
+            record["id"] = index
 
     def add_record(self):
         try:
