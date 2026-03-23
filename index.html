@@ -216,22 +216,26 @@
       <div id="calendarModal" class="calendar-modal" aria-hidden="true">
         <div class="calendar-modal-card" role="dialog" aria-modal="true" aria-label="活动日历">
           <button id="calendarModalClose" class="calendar-modal-close" type="button" aria-label="关闭">×</button>
-          <div class="calendar-header">
-            <button id="calendarPrevBtn" class="calendar-nav-btn" type="button">‹</button>
-            <h3 id="calendarTitle" class="calendar-title">活动日历</h3>
-            <button id="calendarNextBtn" class="calendar-nav-btn" type="button">›</button>
+          <div class="calendar-modal-scroll">
+            <div class="calendar-header">
+              <button id="calendarPrevBtn" class="calendar-nav-btn" type="button">‹</button>
+              <h3 id="calendarTitle" class="calendar-title">活动日历</h3>
+              <button id="calendarNextBtn" class="calendar-nav-btn" type="button">›</button>
+            </div>
+            <div id="calendarGrid" class="calendar-grid"></div>
+            <div id="calendarEventList" class="calendar-event-list"></div>
           </div>
-          <div id="calendarGrid" class="calendar-grid"></div>
-          <div id="calendarEventList" class="calendar-event-list"></div>
         </div>
       </div>
 
       <div id="eventPosterModal" class="event-poster-modal" aria-hidden="true">
         <div class="event-poster-card" role="dialog" aria-modal="true" aria-label="活动宣传图">
           <button id="eventPosterClose" class="event-poster-close" type="button" aria-label="关闭">×</button>
-          <h3 id="eventPosterTitle" class="event-poster-title"></h3>
-          <img id="eventPosterImage" class="event-poster-image" alt="活动宣传图" />
-          <p id="eventPosterText" class="event-poster-text"></p>
+          <div class="event-poster-scroll">
+            <h3 id="eventPosterTitle" class="event-poster-title"></h3>
+            <img id="eventPosterImage" class="event-poster-image" alt="活动宣传图" />
+            <p id="eventPosterText" class="event-poster-text"></p>
+          </div>
         </div>
       </div>
 

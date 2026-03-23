@@ -5,14 +5,16 @@
             "date": "2026-3-24",
             "raw_text": "test",
             "project": "bandori",
-            "image": "2.png"
+            "image": "2.png",
+            "offical": 1
         },
         {
             "event": "test2",
-            "date": "2026-3-25",
+            "date": "2026-3-24",
             "raw_text": "test",
             "project": "bandori",
-            "image": "3.png"
+            "image": "3.png",
+            "offical": 0
         }
     ]
 }
