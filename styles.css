@@ -511,16 +511,23 @@ body {
   position: fixed;
   inset: 0;
   z-index: 78;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(43, 10, 30, 0.42);
   backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 260ms var(--ease-spring), visibility 260ms step-end;
 }
 
 .calendar-modal.open,
 .event-poster-modal.open {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 260ms var(--ease-spring), visibility 0ms;
 }
 
 .calendar-modal-card,
