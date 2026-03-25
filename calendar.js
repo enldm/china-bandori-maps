@@ -110,7 +110,13 @@
   function renderSelectedDayEvents(dateKey, eventMap) {
     const dayEvents = eventMap.get(dateKey) || [];
     if (!dayEvents.length) {
-      els.calendarEventList.innerHTML = `<div class="calendar-empty">${dateKey} 暂无活动</div>`;
+      const current = state.currentDate;
+      const year = current.getFullYear();
+      const month = current.getMonth();
+      const monthEventCount = state.events.filter(
+        (item) => item.parsedDate.getFullYear() === year && item.parsedDate.getMonth() === month
+      ).length;
+      els.calendarEventList.innerHTML = `<div class="calendar-empty">本月有${monthEventCount}个活动</div>`;
       return;
     }
 
@@ -183,9 +189,10 @@
 
     els.calendarGrid.innerHTML = cells.join('');
 
-    const monthHasAnyEvent = state.events.some(
+    const monthEvents = state.events.filter(
       (item) => item.parsedDate.getFullYear() === year && item.parsedDate.getMonth() === month
     );
+    const monthHasAnyEvent = monthEvents.length > 0;
 
     if (!monthHasAnyEvent) {
       els.calendarEventList.innerHTML = '<div class="calendar-empty">本月暂无活动</div>';
@@ -194,10 +201,7 @@
 
     const selectedIsCurrentMonth = state.selectedDateKey && state.selectedDateKey.startsWith(`${year}-${String(month + 1).padStart(2, '0')}`);
     if (!selectedIsCurrentMonth) {
-      const firstEvent = state.events.find(
-        (item) => item.parsedDate.getFullYear() === year && item.parsedDate.getMonth() === month
-      );
-      state.selectedDateKey = firstEvent ? formatDateKey(firstEvent.parsedDate) : '';
+      state.selectedDateKey = '';
     }
 
     renderSelectedDayEvents(state.selectedDateKey, eventMap);
