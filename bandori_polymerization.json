@@ -1,6 +1,6 @@
 {
     "success": true,
-    "total": 64,
+    "total": 65,
     "data": [
         {
             "id": 1,
@@ -701,8 +701,19 @@
             "name": "普通の大菌子批发仓库",
             "info": "1085731457",
             "type": "non-regional",
-            "verified": 0,
+            "verified": 1,
             "raw_text": "邦多利MC服务器+闲聊群",
+            "created_at": "2026-03-29",
+            "project": "bandori"
+        },
+        {
+            "id": 65,
+            "province": "",
+            "name": "邦多利联合大舰队",
+            "info": "985671420",
+            "type": "non-regional",
+            "verified": 1,
+            "raw_text": "邦多利战舰世界同好会",
             "created_at": "2026-03-29",
             "project": "bandori"
         }
